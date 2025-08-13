@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategic HR Dashboard</title>
+    <!-- Use Tailwind CSS for a modern, responsive design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <style>
+        /* Custom styles for the scrollbar to make it look nicer */
+        body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        body::-webkit-scrollbar-track {
+            background: #f0f4f8; /* Light gray background */
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1; /* Gray scrollbar */
+            border-radius: 20px;
+            border: 2px solid #f0f4f8;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 font-sans p-6 md:p-10">
+
+    <!-- Header Section -->
+    <header class="mb-8">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight tracking-tight">Strategic HR Dashboard</h1>
+        <p class="text-xl md:text-2xl text-gray-600 mt-2">A high-level overview of key HR metrics to drive business strategy.</p>
+    </header>
+
+    <!-- Filter and Controls Section -->
+    <section class="bg-white rounded-xl shadow-lg p-6 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Filter Data</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+            <!-- Department Filter -->
+            <div>
+                <label for="department-filter" class="block text-sm font-medium text-gray-700">Department</label>
+                <select id="department-filter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md shadow-sm">
+                    <option>All</option>
+                    <option>Sales</option>
+                    <option>Engineering</option>
+                    <option>Marketing</option>
+                    <option>Support</option>
+                    <option>Finance</option>
+                </select>
+            </div>
+            <!-- Location Filter -->
+            <div>
+                <label for="location-filter" class="block text-sm font-medium text-gray-700">Location</label>
+                <select id="location-filter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md shadow-sm">
+                    <option>All</option>
+                    <option>New York</option>
+                    <option>London</option>
+                    <option>San Francisco</option>
+                </select>
+            </div>
+            <!-- Start Date Filter -->
+            <div>
+                <label for="start-date-filter" class="block text-sm font-medium text-gray-700">Start Date</label>
+                <input type="date" id="start-date-filter" class="mt-1 block w-full pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md shadow-sm">
+            </div>
+            <!-- End Date Filter -->
+            <div>
+                <label for="end-date-filter" class="block text-sm font-medium text-gray-700">End Date</label>
+                <input type="date" id="end-date-filter" class="mt-1 block w-full pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md shadow-sm">
+            </div>
+        </div>
+        <button id="apply-filters-btn" class="mt-4 px-6 py-2 bg-indigo-600 text-white font-bold rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors">Apply Filters</button>
+    </section>
+
+    <!-- Main Dashboard Grid -->
+    <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Metrics Cards Section -->
+        <div class="col-span-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Metric Card: Employee Count -->
+            <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between transition-transform transform hover:scale-105">
+                <p class="text-sm font-medium text-gray-500">Total Employees</p>
+                <p class="text-4xl font-bold text-gray-900 mt-1">1,250</p>
+                <div class="text-sm text-green-500 mt-2">
+                    <span class="font-bold">▲ 5%</span> since last quarter
+                </div>
+            </div>
+            <!-- Metric Card: Turnover Rate -->
+            <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between transition-transform transform hover:scale-105">
+                <p class="text-sm font-medium text-gray-500">Turnover Rate (Annual)</p>
+                <p class="text-4xl font-bold text-gray-900 mt-1">12.3%</p>
+                <div class="text-sm text-red-500 mt-2">
+                    <span class="font-bold">▲ 1.2%</span> year over year
+                </div>
+            </div>
+            <!-- Metric Card: Time to Hire -->
+            <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between transition-transform transform hover:scale-105">
+                <p class="text-sm font-medium text-gray-500">Time to Hire (Avg)</p>
+                <p class="text-4xl font-bold text-gray-900 mt-1">32 days</p>
+                <div class="text-sm text-green-500 mt-2">
+                    <span class="font-bold">▼ 4 days</span> vs. target
+                </div>
+            </div>
+            <!-- Metric Card: Training ROI -->
+            <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between transition-transform transform hover:scale-105">
+                <p class="text-sm font-medium text-gray-500">Training ROI</p>
+                <p class="text-4xl font-bold text-gray-900 mt-1">175%</p>
+                <div class="text-sm text-green-500 mt-2">
+                    <span class="font-bold">▲ 15%</span> year over year
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+
+        <!-- Chart 1: Employee Turnover Rate by Department -->
+        <div class="bg-white rounded-xl shadow-lg p-6 col-span-full lg:col-span-2">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Employee Turnover Rate by Department</h2>
+            <p class="text-sm text-gray-600 mb-4">Visualize which departments have the highest turnover to identify potential issues.</p>
+            <canvas id="turnoverChart"></canvas>
+        </div>
+
+        <!-- Chart 2: Time to Hire by Department -->
+        <div class="bg-white rounded-xl shadow-lg p-6 col-span-full lg:col-span-1">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Time to Hire by Department</h2>
+            <p class="text-sm text-gray-600 mb-4">Monitor recruitment efficiency across the organization.</p>
+            <canvas id="timeToHireChart"></canvas>
+        </div>
+
+        <!-- Chart 3: Employee Distribution by Level -->
+        <div class="bg-white rounded-xl shadow-lg p-6 col-span-full md:col-span-1">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Employee Distribution by Level</h2>
+            <p class="text-sm text-gray-600 mb-4">See the breakdown of employees by career level.</p>
+            <canvas id="distributionChart"></canvas>
+        </div>
+
+        <!-- Chart 4: Hiring Source Effectiveness -->
+        <div class="bg-white rounded-xl shadow-lg p-6 col-span-full md:col-span-2">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Hiring Source Effectiveness</h2>
+            <p class="text-sm text-gray-600 mb-4">Identify which recruitment channels provide the most quality hires.</p>
+            <canvas id="sourceChart"></canvas>
+        </div>
+
+        <!-- New Charts Section -->
+
+        <!-- Chart 5: Employee Satisfaction Score -->
+        <div class="bg-white rounded-xl shadow-lg p-6 col-span-full lg:col-span-1">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Employee Satisfaction Score</h2>
+            <p class="text-sm text-gray-600 mb-4">Track the average satisfaction score over time to measure engagement.</p>
+            <canvas id="satisfactionChart"></canvas>
+        </div>
+        
+        <!-- Chart 6: Salary Distribution by Department -->
+        <div class="bg-white rounded-xl shadow-lg p-6 col-span-full lg:col-span-2">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Salary Distribution by Department</h2>
+            <p class="text-sm text-gray-600 mb-4">Analyze compensation across departments to ensure fairness.</p>
+            <canvas id="salaryChart"></canvas>
+        </div>
+
+        <!-- New Page/Section: Customer Care Feedback -->
+        <div class="bg-white rounded-xl shadow-lg p-6 col-span-full">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Customer Care Feedback - HR Integration Report</h2>
+            <p class="text-sm text-gray-600 mb-4">This section would display aggregated customer feedback data relevant to HR performance and training effectiveness for the Customer Care team.</p>
+            <div class="bg-gray-100 rounded-lg p-6 text-center text-gray-500">
+                <p class="text-lg">Data integration required for this report.</p>
+                <p class="text-sm mt-2">In a live version, this would be a dashboard showing how customer feedback scores correlate with employee performance reviews and training completion rates for the customer care department.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mock data for the charts
+            const mockData = {
+                turnover: {
+                    labels: ['Sales', 'Engineering', 'Marketing', 'Support', 'Finance'],
+                    datasets: [{
+                        label: 'Annual Turnover Rate',
+                        data: [18, 11, 9, 22, 6],
+                        backgroundColor: ['rgba(239, 68, 68, 0.8)', 'rgba(59, 130, 246, 0.8)', 'rgba(34, 197, 94, 0.8)', 'rgba(251, 191, 36, 0.8)', 'rgba(99, 102, 241, 0.8)'],
+                        borderColor: ['rgba(239, 68, 68, 1)', 'rgba(59, 130, 246, 1)', 'rgba(34, 197, 94, 1)', 'rgba(251, 191, 36, 1)', 'rgba(99, 102, 241, 1)'],
+                        borderWidth: 1
+                    }]
+                },
+                timeToHire: {
+                    labels: ['Sales', 'Engineering', 'Marketing', 'Support', 'Finance'],
+                    datasets: [{
+                        label: 'Time to Hire (Days)',
+                        data: [28, 45, 21, 35, 18],
+                        backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                distribution: {
+                    labels: ['Junior', 'Mid-Level', 'Senior', 'Management'],
+                    datasets: [{
+                        label: 'Number of Employees',
+                        data: [350, 500, 300, 100],
+                        backgroundColor: ['rgba(59, 130, 246, 0.8)', 'rgba(34, 197, 94, 0.8)', 'rgba(251, 191, 36, 0.8)', 'rgba(99, 102, 241, 0.8)'],
+                        hoverOffset: 4
+                    }]
+                },
+                source: {
+                    labels: ['LinkedIn', 'Company Website', 'Referrals', 'Job Boards'],
+                    datasets: [{
+                        label: 'Successful Hires',
+                        data: [45, 20, 30, 5],
+                        backgroundColor: 'rgba(34, 197, 94, 0.8)',
+                        borderColor: 'rgba(34, 197, 94, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                satisfaction: {
+                    labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                    datasets: [{
+                        label: 'Average Satisfaction Score (out of 5)',
+                        data: [3.8, 4.1, 4.0, 4.2],
+                        fill: false,
+                        borderColor: 'rgba(34, 197, 94, 1)',
+                        tension: 0.1
+                    }]
+                },
+                salary: {
+                    labels: ['Sales', 'Engineering', 'Marketing', 'Support', 'Finance'],
+                    datasets: [{
+                        label: 'Average Annual Salary ($k)',
+                        data: [85, 120, 95, 75, 110],
+                        backgroundColor: 'rgba(99, 102, 241, 0.8)',
+                        borderColor: 'rgba(99, 102, 241, 1)',
+                        borderWidth: 1
+                    }]
+                }
+            };
+            
+            // Reusable chart options
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true } },
+                plugins: { legend: { display: false } }
+            };
+
+            // Function to create all charts
+            function createCharts(data) {
+                // Destroy existing charts to avoid duplicates
+                if (window.myCharts) {
+                    Object.values(window.myCharts).forEach(chart => chart.destroy());
+                }
+                window.myCharts = {};
+
+                // Turnover Chart
+                const turnoverCtx = document.getElementById('turnoverChart').getContext('2d');
+                window.myCharts.turnover = new Chart(turnoverCtx, {
+                    type: 'bar',
+                    data: data.turnover,
+                    options: { ...chartOptions, scales: { y: { ...chartOptions.scales.y, title: { display: true, text: 'Turnover Rate (%)' } } } }
+                });
+
+                // Time to Hire Chart
+                const timeToHireCtx = document.getElementById('timeToHireChart').getContext('2d');
+                window.myCharts.timeToHire = new Chart(timeToHireCtx, {
+                    type: 'bar',
+                    data: data.timeToHire,
+                    options: { ...chartOptions, scales: { y: { ...chartOptions.scales.y, title: { display: true, text: 'Days' } } } }
+                });
+
+                // Employee Distribution Chart
+                const distributionCtx = document.getElementById('distributionChart').getContext('2d');
+                window.myCharts.distribution = new Chart(distributionCtx, {
+                    type: 'doughnut',
+                    data: data.distribution,
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12 } } } }
+                });
+
+                // Hiring Source Effectiveness Chart
+                const sourceCtx = document.getElementById('sourceChart').getContext('2d');
+                window.myCharts.source = new Chart(sourceCtx, {
+                    type: 'bar',
+                    data: data.source,
+                    options: { ...chartOptions, scales: { y: { ...chartOptions.scales.y, title: { display: true, text: 'Hires' } } } }
+                });
+
+                // Employee Satisfaction Chart
+                const satisfactionCtx = document.getElementById('satisfactionChart').getContext('2d');
+                window.myCharts.satisfaction = new Chart(satisfactionCtx, {
+                    type: 'line',
+                    data: data.satisfaction,
+                    options: { ...chartOptions, scales: { y: { ...chartOptions.scales.y, title: { display: true, text: 'Score' } } } }
+                });
+                
+                // Salary Distribution Chart
+                const salaryCtx = document.getElementById('salaryChart').getContext('2d');
+                window.myCharts.salary = new Chart(salaryCtx, {
+                    type: 'bar',
+                    data: data.salary,
+                    options: { ...chartOptions, scales: { y: { ...chartOptions.scales.y, title: { display: true, text: 'Avg. Salary ($k)' } } } }
+                });
+            }
+
+            // Initial creation of charts with mock data
+            createCharts(mockData);
+
+            // Filter button event listener
+            document.getElementById('apply-filters-btn').addEventListener('click', function() {
+                // In a real-world app, you would get the values from the filters
+                const department = document.getElementById('department-filter').value;
+                const location = document.getElementById('location-filter').value;
+                const startDate = document.getElementById('start-date-filter').value;
+                const endDate = document.getElementById('end-date-filter').value;
+                
+                console.log(`Filtering data for: Department: ${department}, Location: ${location}, Dates: ${startDate} to ${endDate}`);
+
+                // Here, you would fetch new data based on the filters.
+                // For this example, we'll just log the filter values and recreate the charts with the same mock data.
+                createCharts(mockData);
+            });
+        });
+    </script>
+</body>
+</html>
